@@ -3,6 +3,36 @@
     <h1 class="subheading black--text pa-5">Books</h1>
     <v-container>
 
+      <v-dialog v-model="dialog">
+        <template v-slot:activator="{ on, attrs}">
+          <v-btn
+              color="primary"
+              v-bind="attrs"
+              v-on="on"
+          >Add new book</v-btn>
+        </template>
+        <template>
+          <v-card>
+            <v-toolbar
+                color="primary"
+                dark
+            >Add a new book</v-toolbar>
+            <v-card-text>
+              <v-form class="px-5">
+                <v-text-field label="Title" v-model="newBook.title"></v-text-field>
+                <v-text-field label="Author" v-model="newBook.author"></v-text-field>
+                <v-textarea label="Description" v-model="newBook.description"></v-textarea>
+                <v-text-field label="Publisher" v-model="newBook.publisher"></v-text-field>
+                <v-text-field label="Year of publishing" v-model="newBook.year"></v-text-field>
+                <v-text-field label="Price" v-model="newBook.price"></v-text-field>
+                <v-text-field label="Image url" v-model="newBook.url"></v-text-field>
+                <v-btn flat class="success" @click="submit">Add book</v-btn>
+              </v-form>
+            </v-card-text>
+          </v-card>
+        </template>
+      </v-dialog>
+
       <v-layout row class="mb-3 pa-8">
         <span class="heading grey--text mr-5">Sort by:</span>
         <v-btn small flat class="mx-1" @click="sortBy('title')">
@@ -72,6 +102,16 @@
   export default {
     data() {
       return {
+        newBook:{
+          title:'',
+          author:'',
+          description:'',
+          publisher:'',
+          year:'',
+          price:'',
+          url:''
+        },
+        dialog: false,
         books: [
           {image: "https://s.lubimyczytac.pl/upload/books/314000/314304/499287-352x500.jpg", title: "Finansowy Ninja", author: "Michał Szafrański", description: "Finansowy ninja to esencja wiedzy autora i jego doświadczenia na temat finansów osobistych. To podręcznik, który uzupełnić ma braki w edukacji szkolnej. Wyjaśnia podstawowe, ale nieoczywiste zasady, daje proste podpowiedzi dotyczące mądrego posługiwania się produktami finansowymi i przestrzega przed zagrożeniami dla naszych pieniędzy.", publisher: "Michał Szafrański", year: "2016", price:"50.00"},
           {image: "https://s.lubimyczytac.pl/upload/books/4940000/4940535/844684-352x500.jpg", title: "Finansowa Forteca", author: "Marcin Iwuć", description: "Chcesz inwestować, ale nie wiesz, od czego zacząć? Czujesz opór przed nudnymi książkami? Masz dość akademickich tomiszczy, naszpikowanych trudnymi zagadnieniami, z których nic nie wynika? Zamiast próbować „uczyć się inwestować”, zbuduj krok po kroku Finansową Fortecę, która skutecznie ochroni majątek Twój i Twojej rodziny!", publisher: "FBO Marcin Iwuć", year: "2020", price:"80.00"},
@@ -103,6 +143,19 @@
         } else {
           return true;
         }
+      },
+      submit() {
+        const book = {
+          image: this.newBook.image,
+          title: this.newBook.title,
+          author: this.newBook.author,
+          description: this.newBook.description,
+          publisher: this.newBook.publisher,
+          year: this.newBook.year,
+          price: this.newBook.price,
+        }
+        this.books.push(book)
+        this.dialog = false
       }
     }
   }
