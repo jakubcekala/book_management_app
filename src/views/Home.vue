@@ -10,6 +10,7 @@
               color="primary"
               v-bind="attrs"
               v-on="on"
+              @click="cleanEditBook"
           >Add new book</v-btn>
         </template>
         <template>
@@ -282,6 +283,15 @@
         })
           this.books = this.booksRepository
           this.dialogEdit = false
+      },
+      cleanEditBook() {
+        this.bookItem.title = ''
+        this.bookItem.author = ''
+        this.bookItem.description = ''
+        this.bookItem.publisher = ''
+        this.bookItem.year = ''
+        this.bookItem.price = ''
+        this.bookItem.image = ''
       }
     }
   }
