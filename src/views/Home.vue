@@ -235,7 +235,6 @@
         return url.protocol === "http:" || url.protocol === "https:";
       },
       filterByPrice() {
-        this.resetFilters()
         let from = this.priceFilter.valueFrom;
         let to = this.priceFilter.valueTo;
         if (from == null || from === "" || to == null || to === "") {
