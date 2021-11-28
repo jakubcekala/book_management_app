@@ -235,7 +235,7 @@
         return url.protocol === "http:" || url.protocol === "https:";
       },
       filterByPrice() {
-        this.resetFilters()
+        this.books = this.booksRepository
         let from = this.priceFilter.valueFrom;
         let to = this.priceFilter.valueTo;
         if (from == null || from === "" || to == null || to === "") {
@@ -243,12 +243,12 @@
           return
         }
         console.log(from>to)
-        if (parseInt(from) > parseInt(to)) {
+        if (parseFloat(from) > parseFloat(to)) {
           alert("Form value is bigger than To. Please correct filter");
           return
         }
         function getFilteredBooks(book) {
-          return (book['price'] >= from && book['price'] <= to)
+          return (parseFloat(book['price']) >= parseFloat(from) && parseFloat(book['price']) <= parseFloat(to))
         }
         this.books = this.books.filter(getFilteredBooks)
       },
