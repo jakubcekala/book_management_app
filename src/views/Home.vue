@@ -3,7 +3,7 @@
     <h1 class="subheading black--text pa-5">Books</h1>
     <v-container>
 
-      //Add new dialog
+<!--      Add new dialog-->
       <v-dialog v-model="dialogNew">
         <template v-slot:activator="{ on, attrs}">
           <v-btn
@@ -34,7 +34,7 @@
         </template>
       </v-dialog>
 
-      //Edit dialog
+<!--      Edit dialog-->
       <v-dialog v-model="dialogEdit" :retain-focus="false">
         <template>
           <v-card>
@@ -58,7 +58,7 @@
         </template>
       </v-dialog>
 
-      //Sorting row
+<!--      Sorting row-->
       <v-layout row class="mb-3 pa-8">
         <span class="heading grey--text mr-5">Sort by:</span>
         <v-btn small class="mx-1" @click="sortBy('title')">
@@ -94,7 +94,7 @@
         </v-flex>
       </v-layout>
 
-      //Tables with books
+<!--      Tables with books-->
       <v-card class="pa-8" v-for="(book, index) in books" :key="book.title">
         <v-layout row wrap>
           <v-flex xs4 md1 class="ma-2">

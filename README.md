@@ -1,6 +1,10 @@
-# projekt_zai2
+# Book management system - ZAI project 2
 
-## Project setup
+## You can find application demo here
+https://still-gorge-68422.herokuapp.com/
+
+-------------------------------------------------------
+## How to run the project
 ```
 npm install
 ```
@@ -10,15 +14,12 @@ npm install
 npm run serve
 ```
 
+### To start application jusr run
+```
+npm start
+```
+
 ### Compiles and minifies for production
 ```
 npm run build
 ```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
