@@ -38,7 +38,10 @@
       <v-dialog v-model="dialogEdit" width="1000">
         <template>
           <v-card>
-            <v-toolbar color="primary" dark>Edit the book</v-toolbar>
+            <v-toolbar
+                color="primary"
+                dark
+            >Edit the book</v-toolbar>
             <v-card-text>
               <v-form class="px-5" ref="editForm">
                 <v-text-field label="Title" v-model="bookItem.title" :rules="bookItem.inputRules"></v-text-field>
@@ -235,7 +238,7 @@
         this.resetFilters()
         let from = this.priceFilter.valueFrom;
         let to = this.priceFilter.valueTo;
-        if (from == null  || to == null) {
+        if (from == null || from === "" || to == null || to === "") {
           alert("To filter by price enter valid min&max prices");
           return
         }
