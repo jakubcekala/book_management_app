@@ -238,6 +238,7 @@
         this.resetFilters()
         let from = this.priceFilter.valueFrom;
         let to = this.priceFilter.valueTo;
+        alert(from + " " + to )
         if (from == null || from === "" || to == null || to === "") {
           alert("To filter by price enter valid min&max prices");
           return
