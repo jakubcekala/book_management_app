@@ -61,7 +61,7 @@
         <v-text-field label="To" hide-details="auto" class="ms-5" @keypress="isNumber($event)"></v-text-field>
       </v-layout>
 
-      <v-card flat class="pa-8" v-for="book in books" :key="book.title">
+      <v-card flat class="pa-8" v-for="(book, index) in books" :key="book.title">
         <v-layout row wrap>
           <v-flex xs4 md1 class="ma-2">
             <div class="caption grey--text">Image</div>
@@ -72,7 +72,7 @@
             <div class="caption grey--text">Title</div>
             <div>{{ book.title }}</div>
           </v-flex>
-          <v-flex xs4 md2 class="ma-2">
+          <v-flex xs4 md1 class="ma-2">
             <div class="caption grey--text">Author</div>
             <div>{{ book.author }}</div>
           </v-flex>
@@ -91,6 +91,14 @@
           <v-flex xs4 md1 class="ma-2">
             <div class="caption grey--text">Price</div>
             <div>{{ book.price }}</div>
+          </v-flex>
+          <v-flex xs4 md1 class="ma-2">
+            <v-btn class="error ma-1" @click="removeItem(index)">
+              <v-icon>delete</v-icon>
+            </v-btn>
+            <v-btn class="warning">
+              <v-icon>edit</v-icon>
+            </v-btn>
           </v-flex>
         </v-layout>
       </v-card>
@@ -156,6 +164,9 @@
         }
         this.books.push(book)
         this.dialog = false
+      },
+      removeItem(index) {
+        this.books.splice(index, 1)
       }
     }
   }
