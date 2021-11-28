@@ -3,7 +3,8 @@
     <h1 class="subheading black--text pa-5">Books</h1>
     <v-container>
 
-      <v-dialog v-model="dialog">
+      //Add new dialog
+      <v-dialog v-model="dialogNew">
         <template v-slot:activator="{ on, attrs}">
           <v-btn
               color="primary"
@@ -19,39 +20,64 @@
             >Add a new book</v-toolbar>
             <v-card-text>
               <v-form class="px-5" ref="form">
-                <v-text-field label="Title" v-model="newBook.title" :rules="newBook.inputRules"></v-text-field>
-                <v-text-field label="Author" v-model="newBook.author" :rules="newBook.inputRules"></v-text-field>
-                <v-textarea label="Description" v-model="newBook.description" :rules="newBook.inputRules"></v-textarea>
-                <v-text-field label="Publisher" v-model="newBook.publisher" :rules="newBook.inputRules"></v-text-field>
-                <v-text-field label="Year of publishing" v-model="newBook.year" :rules="newBook.inputRules"></v-text-field>
-                <v-text-field label="Price" v-model="newBook.price" :rules="newBook.priceRule"></v-text-field>
-                <v-text-field label="Image url" v-model="newBook.url" :rules="newBook.urlRules"></v-text-field>
-                <v-btn flat class="success" @click="submit">Add book</v-btn>
+                <v-text-field label="Title" v-model="bookItem.title" :rules="bookItem.inputRules"></v-text-field>
+                <v-text-field label="Author" v-model="bookItem.author" :rules="bookItem.inputRules"></v-text-field>
+                <v-textarea label="Description" v-model="bookItem.description" :rules="bookItem.inputRules"></v-textarea>
+                <v-text-field label="Publisher" v-model="bookItem.publisher" :rules="bookItem.inputRules"></v-text-field>
+                <v-text-field label="Year of publishing" v-model="bookItem.year" :rules="bookItem.inputRules"></v-text-field>
+                <v-text-field label="Price" v-model="bookItem.price" :rules="bookItem.priceRule"></v-text-field>
+                <v-text-field label="Image url" v-model="bookItem.image" :rules="bookItem.urlRules"></v-text-field>
+                <v-btn class="success" @click="submit">Add book</v-btn>
               </v-form>
             </v-card-text>
           </v-card>
         </template>
       </v-dialog>
 
+      //Edit dialog
+      <v-dialog v-model="dialogEdit" :retain-focus="false">
+        <template>
+          <v-card>
+            <v-toolbar
+                color="primary"
+                dark
+            >Edit the book</v-toolbar>
+            <v-card-text>
+              <v-form class="px-5" ref="editForm">
+                <v-text-field label="Title" v-model="bookItem.title" :rules="bookItem.inputRules"></v-text-field>
+                <v-text-field label="Author" v-model="bookItem.author" :rules="bookItem.inputRules"></v-text-field>
+                <v-textarea label="Description" v-model="bookItem.description" :rules="bookItem.inputRules"></v-textarea>
+                <v-text-field label="Publisher" v-model="bookItem.publisher" :rules="bookItem.inputRules"></v-text-field>
+                <v-text-field label="Year of publishing" v-model="bookItem.year" :rules="bookItem.inputRules"></v-text-field>
+                <v-text-field label="Price" v-model="bookItem.price" :rules="bookItem.priceRule"></v-text-field>
+                <v-text-field label="Image url" v-model="bookItem.image" :rules="bookItem.urlRules"></v-text-field>
+                <v-btn class="success" @click="updateUser(index)">Submit changes</v-btn>
+              </v-form>
+            </v-card-text>
+          </v-card>
+        </template>
+      </v-dialog>
+
+      //Sorting row
       <v-layout row class="mb-3 pa-8">
         <span class="heading grey--text mr-5">Sort by:</span>
-        <v-btn small flat class="mx-1" @click="sortBy('title')">
+        <v-btn small class="mx-1" @click="sortBy('title')">
           <v-icon left small>title</v-icon>
           <span>Title</span>
         </v-btn>
-        <v-btn small flat class="mx-1" @click="sortBy('author')">
+        <v-btn small class="mx-1" @click="sortBy('author')">
           <v-icon left small>person</v-icon>
           <span>Author</span>
         </v-btn>
-        <v-btn small flat class="mx-1" @click="sortBy('publisher')">
+        <v-btn small class="mx-1" @click="sortBy('publisher')">
           <v-icon left small>business</v-icon>
           <span>Publisher</span>
         </v-btn>
-        <v-btn small flat class="mx-1" @click="sortBy('year')">
+        <v-btn small class="mx-1" @click="sortBy('year')">
           <v-icon left small>schedule</v-icon>
           <span>Year of publishing</span>
         </v-btn>
-        <v-btn small flat class="mx-1" @click="sortBy('price')">
+        <v-btn small class="mx-1" @click="sortBy('price')">
           <v-icon left small>payments</v-icon>
           <span>Prices</span>
         </v-btn>
@@ -68,7 +94,8 @@
         </v-flex>
       </v-layout>
 
-      <v-card flat class="pa-8" v-for="(book, index) in books" :key="book.title">
+      //Tables with books
+      <v-card class="pa-8" v-for="(book, index) in books" :key="book.title">
         <v-layout row wrap>
           <v-flex xs4 md1 class="ma-2">
             <div class="caption grey--text">Image</div>
@@ -99,7 +126,7 @@
             <v-btn class="error mt-1" @click="removeItem(index)">
               <v-icon>delete</v-icon>
             </v-btn>
-            <v-btn class="warning mt-1">
+            <v-btn class="warning mt-1" v-bind="attrs" v-on="on" @click="provideBookData(index)">
               <v-icon>edit</v-icon>
             </v-btn>
           </v-flex>
@@ -137,14 +164,14 @@
           valueFrom: '',
           valueTo: '',
         },
-        newBook:{
+        bookItem:{
           title:'',
           author:'',
           description:'',
           publisher:'',
           year:'',
           price:'',
-          url:'',
+          image:'',
           inputRules: [
             v => !!v || 'This field can not be empty'
           ],
@@ -157,7 +184,8 @@
               v => (!isNaN(parseFloat(v)) && v >= 0 && v <= 5000) || 'Price has to be between 0 and 5000'
           ]
         },
-        dialog: false,
+        dialogNew: false,
+        dialogEdit: false
       }
     },
     methods: {
@@ -177,17 +205,17 @@
       submit() {
         if(this.$refs.form.validate()){
           const book = {
-            image: this.newBook.image,
-            title: this.newBook.title,
-            author: this.newBook.author,
-            description: this.newBook.description,
-            publisher: this.newBook.publisher,
-            year: this.newBook.year,
-            price: this.newBook.price,
+            image: this.bookItem.image,
+            title: this.bookItem.title,
+            author: this.bookItem.author,
+            description: this.bookItem.description,
+            publisher: this.bookItem.publisher,
+            year: this.bookItem.year,
+            price: this.bookItem.price,
           }
           this.booksRepository.push(book)
           this.books = this.booksRepository
-          this.dialog = false
+          this.dialogNew = false
         }
       },
       removeItem(index) {
@@ -225,6 +253,31 @@
       },
       resetFilters() {
         this.books = this.booksRepository
+      },
+      provideBookData(index) {
+        this.dialogEdit = true
+        const bookToEdit = this.books.at(index)
+        this.bookItem.title = bookToEdit.title
+        this.bookItem.author = bookToEdit.author
+        this.bookItem.description = bookToEdit.description
+        this.bookItem.publisher = bookToEdit.publisher
+        this.bookItem.year = bookToEdit.year
+        this.bookItem.price = bookToEdit.price
+        this.bookItem.image = bookToEdit.image
+      },
+      updateUser(index) {
+        console.log(index)
+        this.booksRepository.splice(index, 1, {
+          image: this.bookItem.image,
+          title: this.bookItem.title,
+          author: this.bookItem.author,
+          description: this.bookItem.description,
+          publisher: this.bookItem.publisher,
+          year: this.bookItem.year,
+          price: this.bookItem.price,
+        })
+          this.books = this.booksRepository
+          this.dialogEdit = false
       }
     }
   }
