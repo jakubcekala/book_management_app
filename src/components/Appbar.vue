@@ -4,7 +4,7 @@
       <v-app-bar-nav-icon @click="drawer = !drawer">
       </v-app-bar-nav-icon>
       <v-toolbar-title>
-        <span>Books List</span>
+        <span>Books Management System</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <span>Jakub Cekała (277391)</span>
