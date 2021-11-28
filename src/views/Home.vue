@@ -51,7 +51,7 @@
                 <v-text-field label="Year of publishing" v-model="bookItem.year" :rules="bookItem.inputRules"></v-text-field>
                 <v-text-field label="Price" v-model="bookItem.price" :rules="bookItem.priceRule"></v-text-field>
                 <v-text-field label="Image url" v-model="bookItem.image" :rules="bookItem.urlRules"></v-text-field>
-                <v-btn class="success" @click="updateUser(index)">Submit changes</v-btn>
+                <v-btn class="success" @click="updateUser(editingBook)">Submit changes</v-btn>
               </v-form>
             </v-card-text>
           </v-card>
@@ -164,6 +164,7 @@
           valueFrom: '',
           valueTo: '',
         },
+        editingBook: '',
         bookItem:{
           title:'',
           author:'',
@@ -255,6 +256,7 @@
         this.books = this.booksRepository
       },
       provideBookData(index) {
+        this.editingBook = index
         this.dialogEdit = true
         const bookToEdit = this.books.at(index)
         this.bookItem.title = bookToEdit.title
