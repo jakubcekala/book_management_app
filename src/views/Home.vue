@@ -4,7 +4,7 @@
     <v-container>
 
 <!--      Add new dialog-->
-      <v-dialog v-model="dialogNew">
+      <v-dialog v-model="dialogNew" width="1000">
         <template v-slot:activator="{ on, attrs}">
           <v-btn
               color="primary"
@@ -35,7 +35,7 @@
       </v-dialog>
 
 <!--      Edit dialog-->
-      <v-dialog v-model="dialogEdit" :retain-focus="false">
+      <v-dialog v-model="dialogEdit" width="1000">
         <template>
           <v-card>
             <v-toolbar
