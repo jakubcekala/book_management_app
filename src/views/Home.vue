@@ -18,14 +18,14 @@
                 dark
             >Add a new book</v-toolbar>
             <v-card-text>
-              <v-form class="px-5">
-                <v-text-field label="Title" v-model="newBook.title"></v-text-field>
-                <v-text-field label="Author" v-model="newBook.author"></v-text-field>
-                <v-textarea label="Description" v-model="newBook.description"></v-textarea>
-                <v-text-field label="Publisher" v-model="newBook.publisher"></v-text-field>
-                <v-text-field label="Year of publishing" v-model="newBook.year"></v-text-field>
-                <v-text-field label="Price" v-model="newBook.price"></v-text-field>
-                <v-text-field label="Image url" v-model="newBook.url"></v-text-field>
+              <v-form class="px-5" ref="form">
+                <v-text-field label="Title" v-model="newBook.title" :rules="newBook.inputRules"></v-text-field>
+                <v-text-field label="Author" v-model="newBook.author" :rules="newBook.inputRules"></v-text-field>
+                <v-textarea label="Description" v-model="newBook.description" :rules="newBook.inputRules"></v-textarea>
+                <v-text-field label="Publisher" v-model="newBook.publisher" :rules="newBook.inputRules"></v-text-field>
+                <v-text-field label="Year of publishing" v-model="newBook.year" :rules="newBook.inputRules"></v-text-field>
+                <v-text-field label="Price" v-model="newBook.price" :rules="newBook.priceRule"></v-text-field>
+                <v-text-field label="Image url" v-model="newBook.url" :rules="newBook.urlRules"></v-text-field>
                 <v-btn flat class="success" @click="submit">Add book</v-btn>
               </v-form>
             </v-card-text>
@@ -117,7 +117,18 @@
           publisher:'',
           year:'',
           price:'',
-          url:''
+          url:'',
+          inputRules: [
+            v => !!v || 'This field can not be empty'
+          ],
+          urlRules: [
+            v => !!v || 'This field can not be empty',
+            v => this.isURL(v) || 'URL is not valid',
+          ],
+          priceRule: [
+              v => !!v || 'This field can not be empty',
+              v => (!isNaN(parseFloat(v)) && v >= 0 && v <= 5000) || 'Price has to be between 0 and 5000'
+          ]
         },
         dialog: false,
         books: [
@@ -153,20 +164,33 @@
         }
       },
       submit() {
-        const book = {
-          image: this.newBook.image,
-          title: this.newBook.title,
-          author: this.newBook.author,
-          description: this.newBook.description,
-          publisher: this.newBook.publisher,
-          year: this.newBook.year,
-          price: this.newBook.price,
+        if(this.$refs.form.validate()){
+          const book = {
+            image: this.newBook.image,
+            title: this.newBook.title,
+            author: this.newBook.author,
+            description: this.newBook.description,
+            publisher: this.newBook.publisher,
+            year: this.newBook.year,
+            price: this.newBook.price,
+          }
+          this.books.push(book)
+          this.dialog = false
         }
-        this.books.push(book)
-        this.dialog = false
       },
       removeItem(index) {
         this.books.splice(index, 1)
+      },
+      isURL(str) {
+        let url;
+
+        try {
+          url = new URL(str);
+        } catch (_) {
+          return false;
+        }
+
+        return url.protocol === "http:" || url.protocol === "https:";
       }
     }
   }
