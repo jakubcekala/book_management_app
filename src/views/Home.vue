@@ -254,6 +254,8 @@
       },
       resetFilters() {
         this.books = this.booksRepository
+        this.priceFilter.valueFrom = ""
+        this.priceFilter.valueTo = ""
       },
       provideBookData(index) {
         this.editingBook = index
